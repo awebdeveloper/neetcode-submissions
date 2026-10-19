@@ -1,0 +1,46 @@
+class Solution:
+    def check(self, tHash: dict, windowHash: dict) -> bool:
+        for key in tHash:
+            if windowHash.get(key, 0) < tHash[key]:
+                return False
+        return True
+
+    def generateHash(self, s1: str) -> dict:
+        s1Hash = {}
+        for char in s1:
+            s1Hash[char] = s1Hash.get(char,0) + 1
+        return s1Hash
+
+    def minWindow(self, s: str, t: str) -> str:
+        match = ""
+
+        if len(t) > len(s):
+            return match
+
+        
+        tHash = self.generateHash(t)
+        tLen = len(t)
+        windowHash = {}
+        window = ""
+
+        for left in range(len(s)):
+            windowHash = {}
+            if not tHash.get(s[left],False):
+                continue;
+            for right in range(left, len(s)):
+                window = s[left : right+1]
+                windowHash[s[right]] = windowHash.get(s[right], 0) + 1
+
+                if self.check(tHash, windowHash):
+                    match = match if (len(match)  < len(window) and match != "") else window
+                    break
+        
+        return match
+
+
+
+
+
+
+            
+
